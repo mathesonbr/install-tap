@@ -1,9 +1,38 @@
 #!/bin/sh
 
+if [ -f install-tap.env ]; then
+  . ./install-tap.env
+else
+  tee install-tap.env <<EOF
+# This should probably be set to an internal registry preloaded with tap
+export TAP_INSTALL_REGISTRY_HOSTNAME=registry.tanzu.vmware.com
+export TAP_INSTALL_NS=tap-install # note this fails when changed
+export TAP_INSTALL_CONFIG=tap.yaml
+#export TAP_VERSION=1.5.0-build.11
+export TAP_VERSION=1.4.0
+export ENVIRONMENT=development
+export KP_REPOSITORY_PATH=development/kp
+
+export KP_REGISTRY_HOSTNAME=YOUR_HARBOR
+export GITHUB_CLIENT_ID=
+export GITHUB_CLIENT_SECRET=
+export GITHUB_TOKEN=
+export ACME_ACCOUNT_EMAIL=
+export INGRESS_DOMAIN=YOUR_ROOT_DOMAIN # (e.g. example.com)
+
+export TAP_DOMAIN=tap.\$INGRESS_DOMAIN
+export TAP_GUI_FQDN=tap-gui.\$INGRESS_DOMAIN
+EOF
+  . ./install-tap.env
+fi
+
+
 usage() {
   echo "$0 [prepare|install|expose|get [packagename]|list|update|delete]]"
 }
 prepare() {
+
+
   tanzu package repository add tanzu-tap-repository \
     --url $TAP_INSTALL_REGISTRY_HOSTNAME/tanzu-application-platform/tap-packages:$TAP_VERSION \
     --namespace $TAP_INSTALL_NS
@@ -133,7 +162,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: gui
+  name: tap-gui
   namespace: tap-gui
 spec:
   commonName: $TAP_GUI_FQDN
@@ -154,10 +183,11 @@ metadata:
   namespace: tap-gui
 type: kubernetes.io/tls
 EOF
-   
   sleep 1
   kubectl describe httpproxy -n tap-gui
   kubectl describe cr -n tap-gui
+  kubectl get all -n tanzu-system-ingress
+  echo tap-gui.dev2.bmath.nyc | nslookup
 }
 get() {
   if [ -z "$1" ]; then
@@ -177,10 +207,13 @@ delete() {
   tanzu package installed delete -n $TAP_INSTALL_NS tap
 }
 case "$1" in
+  prepare)
+    prepare
+    exit
+    ;;
   install)
     prepare
-    install
-    expose
+    install && expose
     exit
     ;;
   expose)
