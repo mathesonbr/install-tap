@@ -222,6 +222,10 @@ delete() {
   tanzu package installed delete -n $TAP_INSTALL_NS tap
 }
 case "$1" in
+  clean)
+    clean
+    exit
+    ;;
   load)
     load
     exit
