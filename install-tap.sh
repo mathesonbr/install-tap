@@ -223,7 +223,7 @@ case "$1" in
   load)
     load
     exit
-    ;;XS
+    ;;
   prepare)
     prepare
     exit
