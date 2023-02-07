@@ -8,7 +8,7 @@ else
 export TAP_INSTALL_REGISTRY_HOSTNAME=harbor.az.bmath.nyc
 export TAP_INSTALL_NS=tap-install # note this fails when changed
 export TAP_INSTALL_CONFIG=tap.yaml
-#export TAP_VERSION=1.5.0-build.11
+#export TAP_VERSION=1.5.0-build.14
 export TAP_VERSION=1.4.0
 export ENVIRONMENT=development
 export KP_REPOSITORY_PATH=development/kp
@@ -28,7 +28,8 @@ fi
 
 
 usage() {
-  echo "$0 [prepare|install|expose|get [packagename]|list|update|delete]]"
+  echo
+  echo "$0 [clean|load|prepare|install|expose|get [packagename]|list|update|delete]]"
   echo 
   echo "and don't forget the following reg secrets:"
   echo 
