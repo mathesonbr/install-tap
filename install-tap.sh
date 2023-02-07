@@ -41,7 +41,7 @@ clean() {
   rm install-tap.env tap.yaml
 }
 load() {
-  imgpkg copy -b registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:$TAP_VERSION --to-repo $TAP_INSTALL_REGISTRY_HOSTNAME/tanzu-application-platform/tap-packages
+  imgpkg copy --include-non-distributable-layers -b registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:$TAP_VERSION --to-repo $TAP_INSTALL_REGISTRY_HOSTNAME/tanzu-application-platform/tap-packages
 }
 prepare() {
   tanzu secret registry add tap-registry \
