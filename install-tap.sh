@@ -5,7 +5,7 @@ if [ -f install-tap.env ]; then
 else
   tee install-tap.env <<EOF
 # This should probably be set to an internal registry preloaded with tap
-export TAP_INSTALL_REGISTRY_HOSTNAME=registry.tanzu.vmware.com
+export TAP_INSTALL_REGISTRY_HOSTNAME=harbor.az.bmath.nyc
 export TAP_INSTALL_NS=tap-install # note this fails when changed
 export TAP_INSTALL_CONFIG=tap.yaml
 #export TAP_VERSION=1.5.0-build.11
@@ -13,7 +13,7 @@ export TAP_VERSION=1.4.0
 export ENVIRONMENT=development
 export KP_REPOSITORY_PATH=development/kp
 
-export KP_REGISTRY_HOSTNAME=YOUR_HARBOR
+export KP_REGISTRY_HOSTNAME=harbor.az.bmath.nyc
 export GITHUB_CLIENT_ID=
 export GITHUB_CLIENT_SECRET=
 export GITHUB_TOKEN=
@@ -36,9 +36,11 @@ usage() {
   echo "tanzunet-repository-creds          Exported  tap-install"
 	echo "tap-registry                       Exported  tap-install"
 }
+clean() {
+  rm install-tap.env tap.yaml
+}
 load() {
-  imgpkg copy -b registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:$TAP_VERSION --to-repo $INSTALL_REGISTRY_HOSTNAME/tanzu-application-platform/tap-packages
-
+  imgpkg copy -b registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:$TAP_VERSION --to-repo $TAP_INSTALL_REGISTRY_HOSTNAME/tanzu-application-platform/tap-packages
 }
 prepare() {
   tanzu secret registry add tap-registry \
