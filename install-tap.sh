@@ -30,11 +30,11 @@ fi
 usage() {
   echo "$0 [prepare|install|expose|get [packagename]|list|update|delete]]"
   echo 
-  echo "and don\'t forget the following reg secrets:  
+  echo "and don\'t forget the following reg secrets:"
   echo 
   echo "kp-default-repository-creds        Exported  tap-install"
   echo "tanzunet-repository-creds          Exported  tap-install"
-	echo "tap-registry	                     Exported  tap-install"
+	echo "tap-registry                       Exported  tap-install"
 }
 prepare() {
   tanzu secret registry add tap-registry \
