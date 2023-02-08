@@ -52,17 +52,19 @@ prepare() {
   tanzu package repository add tanzu-tap-repository \
     --url $TAP_INSTALL_REGISTRY_HOSTNAME/tanzu-application-platform/tap-packages:$TAP_VERSION \
     --namespace $TAP_INSTALL_NS
+  result=$?
   sleep 1
   tanzu package repository get tanzu-tap-repository --namespace $TAP_INSTALL_NS
   
   tanzu package available list --namespace $TAP_INSTALL_NS
+  return $result
 }
 install() {
-if [ -f "$TAP_INSTALL_CONFIG" ]; then
-  echo Found config $TAP_INSTALL_CONFIG
-else
-  echo Creating config $TAP_INSTALL_CONFIG
-  tee $TAP_INSTALL_CONFIG <<EOF
+  if [ -f "$TAP_INSTALL_CONFIG" ]; then
+    echo Found config $TAP_INSTALL_CONFIG
+  else
+    echo Creating config $TAP_INSTALL_CONFIG
+    tee $TAP_INSTALL_CONFIG <<EOF
 accelerator:
   domain: $TAP_DOMAIN
   ingress:
