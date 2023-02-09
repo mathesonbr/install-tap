@@ -45,7 +45,9 @@ load() {
   imgpkg copy --include-non-distributable-layers -b registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:$TAP_VERSION --to-repo $TAP_INSTALL_REGISTRY_HOSTNAME/tanzu-application-platform/tap-packages
 }
 prepare() {
-  tanzu secret registry add tap-registry \
+  kubectl create ns $TAP_INSTALL_NS  || \
+    echo "can't create namespace $TAP_INSTALL_NS
+  #tanzu secret registry add tap-registry \
   --username ${INSTALL_REGISTRY_USERNAME} --password ${INSTALL_REGISTRY_PASSWORD} \
   --server ${INSTALL_REGISTRY_HOSTNAME} \
   --export-to-all-namespaces --yes --namespace tap-install
@@ -239,8 +241,7 @@ case "$1" in
     exit
     ;;
   install)
-    prepare
-    install && expose
+    install
     exit
     ;;
   expose)
