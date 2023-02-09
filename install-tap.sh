@@ -4,6 +4,7 @@ if [ -f install-tap.env ]; then
   . ./install-tap.env
 else
   tee install-tap.env <<EOF
+# Environment variable template.  $0 sources this at start
 # This should probably be set to an internal registry preloaded with tap
 export TAP_INSTALL_REGISTRY_HOSTNAME=harbor.az.bmath.nyc
 export TAP_INSTALL_NS=tap-install # note this fails when changed
@@ -35,7 +36,7 @@ usage() {
   echo 
   echo "kp-default-repository-creds        Exported  tap-install"
   echo "tanzunet-repository-creds          Exported  tap-install"
-	echo "tap-registry                       Exported  tap-install"
+  echo "tap-registry                       Exported  tap-install"
 }
 clean() {
   rm install-tap.env tap.yaml
