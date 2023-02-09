@@ -46,7 +46,7 @@ load() {
 }
 prepare() {
   kubectl create ns $TAP_INSTALL_NS  || \
-    echo "can't create namespace $TAP_INSTALL_NS
+    echo "can't create namespace $TAP_INSTALL_NS"
   #tanzu secret registry add tap-registry \
   --username ${INSTALL_REGISTRY_USERNAME} --password ${INSTALL_REGISTRY_PASSWORD} \
   --server ${INSTALL_REGISTRY_HOSTNAME} \
